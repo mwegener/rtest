@@ -92,7 +92,64 @@ print("Hello from R!")
 
 **Key Takeaway:** The RStudio Git tab is a user-friendly interface for running these fundamental Git commands. You can use whichever you prefer, but it's good to know what's happening behind the scenes.
 
-## 4. Local-First vs. Remote-First Repositories
+## 4. Practice: Two More Commits (10 mins)
+
+Let's reinforce what we've learned with two more examples. This time, you'll do one commit using the GUI and one using the command line.
+
+### Example A: Adding Data Analysis Code (GUI Method)
+
+1.  **Add more code to your script.** Open your `analysis.R` file and add these lines:
+
+```{r}
+#| eval: false
+# Load and explore data
+data <- mtcars
+summary(data)
+```
+
+2.  **Check the Git tab.** You'll see `analysis.R` appears again with a blue "M" (modified).
+
+3.  **Review your changes (Optional but helpful!).** Before staging, click on the filename `analysis.R` in the Git tab. A "diff" window will open showing exactly what changed: lines in red were removed, lines in green were added. This is incredibly useful for reviewing your work before committing.
+
+4.  **Stage and commit.** Check the box to stage the file, click "Commit", and write the message: `Add data loading and summary`
+
+::: {.callout-tip}
+## GUI Tip: Staging Specific Lines
+
+If you made multiple unrelated changes to a file, you can actually stage only *some* of those changes! In the diff window, select the specific lines you want to commit, right-click, and choose "Stage Selection". This helps keep each commit focused on one logical change.
+:::
+
+### Example B: Adding a Simple Plot (CLI Method)
+
+1.  **Add plotting code.** Add this to your `analysis.R` file:
+
+```{r}
+#| eval: false
+# Create a simple plot
+plot(data$mpg, data$hp, 
+     xlab = "Miles per Gallon", 
+     ylab = "Horsepower")
+```
+
+2.  **Use the Terminal workflow:**
+
+    -   Check status: `git status`
+    -   Stage the file: `git add analysis.R` (this time we're being specific!)
+    -   Check again: `git status`
+    -   Commit: `git commit -m "Add scatter plot of mpg vs horsepower"`
+
+3.  **Verify your work.** Click the "History" button in the Git tab (or run `git log --oneline` in the terminal). You should now see all your commits listed!
+
+::: {.callout-note}
+## When to Use GUI vs. CLI?
+
+-   **GUI:** Great for visual learners, reviewing changes before committing, and when you're just starting out.
+-   **CLI:** Faster once you learn it, more powerful for advanced operations, and works everywhere (even on remote servers).
+
+Many experienced users mix both approaches: GUI for reviewing diffs, CLI for quick commits!
+:::
+
+## 5. Local-First vs. Remote-First Repositories
 
 This is a perfect time to discuss the two main ways a Git project begins.
 

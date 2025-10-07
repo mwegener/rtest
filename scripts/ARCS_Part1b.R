@@ -336,3 +336,9 @@ adding more text
 print("Hello from R!")
 
 #ntest
+
+{r}
+#| eval: false
+# Load and explore data
+data <- mtcars
+summary(data)
