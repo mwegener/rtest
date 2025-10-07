@@ -1,0 +1,111 @@
+---
+title: "Part 2: Working Locally with Git & RStudio"
+author: "Workshop Instructor"
+format: html
+editor: visual
+---
+
+## Introduction
+
+Welcome to Part 2! In this section, we will get hands-on with Git right inside RStudio. We'll learn the fundamental workflow of saving changes to our project's history. This entire process happens locally, on our own computers. We will explore doing this in two ways: using RStudio's user-friendly graphical interface and using the powerful command line terminal.
+
+## 1. Recap: The Initialized Repo (2 mins)
+
+When your RStudio Project was created, the option to "Create a git repository" was selected. This means Git has already been initialized and is tracking your project folder.
+
+Your mission control for Git in RStudio is the **Git tab**, typically located in the top-right pane next to "Environment" and "History".
+
+**Action:** Click on the **Git tab**. You should see that the pane is currently empty, which means Git doesn't see any unsaved changes.
+
+## 2. The Git Workflow in RStudio (10 mins)
+
+The core Git workflow involves three steps:
+
+1.  You make changes to your files.
+2.  You stage the specific changes you want to save.
+3.  You commit those staged changes, creating a permanent snapshot in your project's history.
+
+Let's walk through this.
+
+### Staging a Change
+
+1.  **Make a small change.** Open any of your R scripts. If you don't have one, create a new one (File -\> New File -\> R Script) and save it as `analysis.R`. Add a comment to the script, like this:
+
+```{r}
+#| eval: false
+# This is our first tracked change.
+```
+
+2.  **View the change in the Git tab.** Click back to the **Git tab** in the top-right pane. You will now see your `analysis.R` file listed! RStudio is telling you that the file has been modified since your last commit. The yellow "M" icon indicates a modification.
+
+3.  **Stage the file.** Staging is how you tell Git, "I want to include this change in my next snapshot." To do this, click the checkbox under the "Staged" column for the `analysis.R` file. The file's icon will turn into a green "A".
+
+### Committing a Change
+
+Now that you've staged your change, you're ready to commit it to the project's history.
+
+1.  Click the **"Commit"** button at the top of the Git pane.
+
+2.  **Write a clear commit message.** A new window will open. In the top-right "Commit message" box, you need to write a short description of the change you made. Good commit messages are short, descriptive, and use the imperative mood (e.g., "Add," "Fix," "Change" instead of "Added," "Fixed," "Changed").
+
+    Type this message: `Add initial analysis comment`
+
+3.  **Commit the file.** Click the **"Commit"** button. A dialog box will pop up confirming the changes. You can close this.
+
+4.  **View the history.** Back in the main RStudio window, click the **"History"** button (it looks like a clock) at the top of the Git pane. You can now see your first commit! It includes a unique ID (the "SHA"), the author, the date, and the descriptive message you wrote.
+
+**Congratulations, you've completed your first version control cycle!**
+
+## 3. Git on the Command Line (CLI) - A Quick Look (10 mins)
+
+The RStudio Git tab is a fantastic visual tool, but it's just running Git commands for you in the background. Let's pull back the curtain and run those same commands ourselves.
+
+1.  **Open the Terminal.** In RStudio, there is a tab next to the "Console" tab labeled "Terminal". Click on it.
+
+2.  **Check the project status.** The single most useful Git command is `git status`. It tells you the current state of your repository.
+
+    **Action:** In the terminal, type `git status` and press Enter.
+
+    **Result:** It should say `nothing to commit, working tree clean`. This is because we just saved all our changes with the last commit.
+
+3.  **Make another change.** Go back to your `analysis.R` script and add a new line of code.
+
+```{r}
+#| eval: false
+# This is our first tracked change.
+print("Hello from R!")
+```
+
+4.  **Check the status again.** Go back to the terminal and run `git status` again. Notice that Git now sees that `analysis.R` has been modified.
+
+5.  **Stage the change (CLI).** To stage the file using the command line, we use `git add`.
+
+    **Action:** In the terminal, type `git add .` and press Enter. The `.` is shorthand for "all changed files in the current directory."
+
+    **Check:** Run `git status` one more time. You'll see the file is now listed under "Changes to be committed."
+
+6.  **Commit the change (CLI).** To commit, we use `git commit` with the `-m` flag to provide a message.
+
+    **Action:** In the terminal, type `git commit -m "Add print statement via CLI"` and press Enter.
+
+**You've just done the exact same workflow as before, but using the command line!**
+
+**Key Takeaway:** The RStudio Git tab is a user-friendly interface for running these fundamental Git commands. You can use whichever you prefer, but it's good to know what's happening behind the scenes.
+
+## 4. Local-First vs. Remote-First Repositories
+
+This is a perfect time to discuss the two main ways a Git project begins.
+
+### Local-First (What we just did):
+
+-   **The process:** You start a project on your own computer first. You initialize a Git repository, work on your files, and create a history of commits, all locally.
+-   **The goal:** Later, you can decide to "push" this local project to a remote server like GitHub to back it up, share it, or collaborate.
+-   **Analogy:** You write a new document in Microsoft Word on your desktop. When you're ready, you upload it to OneDrive to share with your colleagues.
+
+### Remote-First (Cloning):
+
+-   **The process:** The project already exists on a remote server like GitHub. Your first step is to "clone" it, which downloads a complete copy of the project and its entire version history onto your computer.
+-   **The goal:** This is the standard way to join a project that a colleague has already started or to contribute to an open-source project.
+-   **Analogy:** A colleague shares a document with you via OneDrive. You use the "Open in Desktop App" feature to download a local copy to your computer so you can start editing.
+
+**In this workshop, we started "local-first." Later, in the collaboration section, you will experience the "remote-first" workflow when you clone your partner's repository.**
