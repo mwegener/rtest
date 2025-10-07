@@ -175,6 +175,14 @@ Now that we have a local repository with a commit history, let's back it up and 
 
 SSH (Secure Shell) is a secure way to connect your computer to GitHub. Think of it as a special key that proves your identity without typing your password every time.
 
+::: {.callout-note}
+## Alternative: Personal Access Tokens (PATs)
+
+Personal Access Tokens are an alternative authentication method using HTTPS instead of SSH. However, they expire every 90 days and require renewal, which can disrupt your workflow. **SSH is strongly preferred for long-term research projects** because it's a one-time setup. 
+
+If SSH doesn't work due to network/firewall restrictions, GitHub Desktop (which uses HTTPS) is a good backup option, or consult your instructor about PAT setup.
+:::
+
 #### Check for Existing SSH Keys
 
 First, let's see if you already have SSH keys on your computer.
