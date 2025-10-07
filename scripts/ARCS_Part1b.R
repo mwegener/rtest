@@ -331,3 +331,6 @@ cat("3. Or run individual analyses with: run_single_analysis('analysis_type')\n"
 
 #testing git commits
 adding more text
+
+# This is our first tracked change.
+print("Hello from R!")
