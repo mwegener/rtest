@@ -166,3 +166,245 @@ This is a perfect time to discuss the two main ways a Git project begins.
 -   **Analogy:** A colleague shares a document with you via OneDrive. You use the "Open in Desktop App" feature to download a local copy to your computer so you can start editing.
 
 **In this workshop, we started "local-first." Later, in the collaboration section, you will experience the "remote-first" workflow when you clone your partner's repository.**
+
+## 6. Publishing Your Repository to GitHub (20 mins)
+
+Now that we have a local repository with a commit history, let's back it up and share it by publishing to GitHub.com. This requires two steps: setting up authentication with SSH keys, and creating a remote repository.
+
+### Step 1: Set Up SSH Authentication
+
+SSH (Secure Shell) is a secure way to connect your computer to GitHub. Think of it as a special key that proves your identity without typing your password every time.
+
+#### Check for Existing SSH Keys
+
+First, let's see if you already have SSH keys on your computer.
+
+**In the RStudio Terminal**, run:
+
+```bash
+ls ~/.ssh
+```
+
+If you see files named `id_ed25519` or `id_rsa`, you already have keys! Skip to "Add Your Key to GitHub" below. If not, continue to generate new keys.
+
+#### Generate a New SSH Key
+
+::: {.panel-tabset}
+
+## macOS/Linux
+
+1. **Generate the key.** In the Terminal, run this command (replace with your actual GitHub email):
+
+```bash
+ssh-keygen -t ed25519 -C "your_email@example.com"
+```
+
+2. **Save the key.** When prompted "Enter a file in which to save the key," press **Enter** to accept the default location (`~/.ssh/id_ed25519`).
+
+3. **Set a passphrase (optional).** You'll be asked to enter a passphrase. This adds extra security but is optional. You can press **Enter** twice to skip it, or type a passphrase you'll remember.
+
+4. **Start the SSH agent:**
+
+```bash
+eval "$(ssh-agent -s)"
+```
+
+You should see something like `Agent pid 12345`.
+
+5. **Add your key to the SSH agent:**
+
+```bash
+ssh-add ~/.ssh/id_ed25519
+```
+
+6. **Copy your public key to the clipboard:**
+
+```bash
+pbcopy < ~/.ssh/id_ed25519.pub
+```
+
+Your key is now copied and ready to paste into GitHub!
+
+## Windows
+
+::: {.callout-note}
+## Windows Users: Use Git Bash or RStudio Terminal
+
+These commands work in **Git Bash** (installed with Git for Windows) or the **RStudio Terminal**. If you're using Command Prompt or PowerShell, some commands may differ. We recommend using the RStudio Terminal for consistency.
+:::
+
+1. **Generate the key.** In the Terminal, run this command (replace with your actual GitHub email):
+
+```bash
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+```
+
+2. **Save the key.** When prompted "Enter a file in which to save the key," press **Enter** to accept the default location.
+
+   You'll see: `Your identification has been saved in /c/Users/YourName/.ssh/id_rsa`
+
+3. **Set a passphrase (optional).** You'll be asked to enter a passphrase. This adds extra security but is optional. 
+   - To skip: Press **Enter** twice
+   - To add security: Type a passphrase you'll remember, press **Enter**, then type it again
+
+4. **Start the SSH agent:**
+
+```bash
+eval "$(ssh-agent -s)"
+```
+
+You should see something like `Agent pid 12345`.
+
+5. **Add your key to the SSH agent:**
+
+```bash
+ssh-add ~/.ssh/id_rsa
+```
+
+You should see: `Identity added: /c/Users/YourName/.ssh/id_rsa`
+
+6. **Copy your public key to the clipboard:**
+
+**Option 1 (Git Bash/RStudio Terminal):**
+```bash
+cat ~/.ssh/id_rsa.pub | clip
+```
+
+**Option 2 (If clip doesn't work):**
+```bash
+cat ~/.ssh/id_rsa.pub
+```
+Then manually select and copy the entire output (it starts with `ssh-rsa` and ends with your email).
+
+**Option 3 (PowerShell users):**
+```powershell
+Get-Content ~/.ssh/id_rsa.pub | Set-Clipboard
+```
+
+Your key is now copied and ready to paste into GitHub!
+
+::: {.callout-warning}
+## Windows Troubleshooting
+
+If `ssh-agent` won't start, try opening RStudio or Git Bash **as Administrator**. Right-click the application icon and select "Run as administrator."
+
+If you see "Could not open a connection to your authentication agent," run this first:
+```bash
+ssh-agent bash
+```
+Then retry the `ssh-add` command.
+:::
+
+:::
+
+::: {.callout-important}
+## Keep Your Keys Safe!
+
+-   The `.pub` file is your **public key** (safe to share with GitHub)
+-   The file without `.pub` is your **private key** (never share this!)
+-   If someone asks for your SSH key, they always mean the public one
+:::
+
+#### Add Your SSH Key to GitHub
+
+Now we'll add your public key (which is copied to your clipboard) to your GitHub account:
+
+1.  Go to [github.com](https://github.com) and log in to your account
+
+2.  Click on your **profile photo** in the upper-right corner
+
+3.  Click **Settings**
+
+4.  In the left sidebar, click **SSH and GPG keys**
+
+5.  Click the green **New SSH key** button
+
+6.  In the **Title** field, add a descriptive name like "My RStudio Laptop"
+
+7.  In the **Key** field, paste your key (Cmd+V on Mac, Ctrl+V on Windows)
+
+8.  Click **Add SSH key**
+
+9.  If prompted, confirm your GitHub password
+
+#### Test Your Connection
+
+Back in the RStudio Terminal, run:
+
+```bash
+ssh -T git@github.com
+```
+
+You may see a warning about authenticity - type `yes` and press Enter.
+
+You should see a message like: `Hi username! You've successfully authenticated...`
+
+**Success!** Your computer can now securely talk to GitHub.
+
+### Step 2: Create a Repository on GitHub.com
+
+Now let's create a home for your local repository on GitHub:
+
+1.  Go to [github.com](https://github.com) and log in
+
+2.  Click on your **profile picture** in the top-right corner
+
+3.  Select **Your repositories**
+
+4.  Click the green **New** button
+
+5.  **Repository name:** Enter a name (e.g., `ARCS-workshop`)
+
+6.  **Description (optional):** Add a brief description like "Reproducibility workshop project"
+
+7.  **Visibility:** Choose **Private** (or Public if you want others to see it)
+
+8.  **Important:** Do NOT check "Add a README file" - we already have files locally!
+
+9.  Click the green **Create repository** button
+
+### Step 3: Connect Your Local Repository to GitHub
+
+GitHub will show you a page with setup instructions. We'll use the commands for "push an existing repository from the command line."
+
+In your RStudio Terminal, run these commands one at a time:
+
+1.  **Add the remote connection** (replace `username` and `yourreponame` with yours):
+
+```bash
+git remote add origin git@github.com:username/yourreponame.git
+```
+
+This tells Git where the remote repository lives.
+
+2.  **Ensure you're on the main branch:**
+
+```bash
+git branch -M main
+```
+
+3.  **Push your commits to GitHub:**
+
+```bash
+git push -u origin main
+```
+
+The `-u` flag sets up tracking so future pushes are easier.
+
+You should see output showing your commits being uploaded. When it finishes, refresh your GitHub repository page in your browser - you should see all your files and commit history!
+
+::: {.callout-tip}
+## Troubleshooting: Using GitHub Desktop as a Backup Method
+
+If you encounter authorization issues with the command line, you can use GitHub Desktop as an alternative:
+
+1.  Download and install [GitHub Desktop](https://desktop.github.com/)
+2.  Sign in with your GitHub account
+3.  Click "Add" → "Add Existing Repository"
+4.  Navigate to your project folder
+5.  Click "Publish repository" to upload to GitHub.com
+
+This method uses HTTPS authentication instead of SSH.
+:::
+
+**Congratulations!** Your local repository is now backed up on GitHub. Any changes you commit locally can be pushed to GitHub with `git push`, and you can access your code from anywhere.
