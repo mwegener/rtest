@@ -342,3 +342,7 @@ print("Hello from R!")
 # Load and explore data
 data <- mtcars
 summary(data)
+# Create a simple plot
+plot(data$mpg, data$hp, 
+     xlab = "Miles per Gallon", 
+     ylab = "Horsepower")
